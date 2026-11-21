@@ -53,6 +53,12 @@ p{margin:0 0 22px;color:var(--muted);font-weight:600;line-height:1.5}
 #toast{position:fixed;z-index:60;left:50%;top:calc(env(safe-area-inset-top,0px) + 18px);transform:translate(-50%,-80px);background:var(--deep);color:#fff;font-weight:800;padding:12px 22px;border-radius:999px;box-shadow:0 10px 24px rgba(0,0,0,.2);transition:transform .35s cubic-bezier(.3,1.4,.5,1);max-width:90vw;text-align:center}
 #toast.on{transform:translate(-50%,0)}
 .sm{font-weight:800;color:var(--deep);margin-top:-6px}
+.timer{display:flex;align-items:center;justify-content:center;gap:10px;margin:22px 0 26px}
+.tcol{display:flex;flex-direction:column;align-items:center;gap:8px;background:var(--input);border:2px solid var(--line);border-radius:24px;padding:10px 14px}
+.num{font-size:2.8rem;font-weight:900;min-width:2ch;color:var(--deep);font-variant-numeric:tabular-nums;line-height:1.1}
+.arr{width:48px;height:36px;border:0;border-radius:14px;background:rgba(255,143,177,.2);color:var(--deep);font-size:1rem;cursor:pointer;transition:all .2s}
+.arr:hover{background:var(--pink);color:#fff}.arr:active{transform:scale(.92)}
+.colon{font-size:2.6rem;font-weight:900;color:var(--deep)}
 </style>
 </head>
 <body>
@@ -100,6 +106,17 @@ p{margin:0 0 22px;color:var(--muted);font-weight:600;line-height:1.5}
     <button class="btn" id="dateNext">Continue</button>
   </section>
 
+  <section class="step" data-s="4b">
+    <div class="ico">⏰</div>
+    <h1>Mấy h tui qua rước em đc đâyy</h1>
+    <div class="timer">
+      <div class="tcol"><button class="arr" data-t="h" data-d="1" aria-label="Tăng giờ">▲</button><div class="num" id="hh">19</div><button class="arr" data-t="h" data-d="-1" aria-label="Giảm giờ">▼</button></div>
+      <div class="colon">:</div>
+      <div class="tcol"><button class="arr" data-t="m" data-d="1" aria-label="Tăng phút">▲</button><div class="num" id="mm">00</div><button class="arr" data-t="m" data-d="-1" aria-label="Giảm phút">▼</button></div>
+    </div>
+    <button class="btn" data-next>Continue</button>
+  </section>
+
   <section class="step" data-s="5">
     <div class="ico">🍜</div>
     <h1 style="font-size:1.4rem">Món ăn yêu thích của em là gì? (Trừ bò kho, bò kho tui note rùi 😏)</h1>
@@ -131,7 +148,7 @@ p{margin:0 0 22px;color:var(--muted);font-weight:600;line-height:1.5}
 </main>
 
 <script>
-const state={date:null,other:'',food:'',addr:''};
+const state={date:null,other:'',food:'',addr:'',h:19,m:0};
 let cur=0,timer=null;
 const $=s=>document.querySelector(s),steps=[...document.querySelectorAll('.step')];
 try{const s=JSON.parse(localStorage.getItem('dateInvite')||'null');if(s){Object.assign(state,s)}}catch(e){}
@@ -147,23 +164,23 @@ function go(n){
   const show=()=>{
     steps.forEach(s=>s.classList.remove('on','out'));
     cur=n;steps[n].classList.add('on');
-    $('#back').classList.toggle('on',[3,4,5,6].includes(n));
+    $('#back').classList.toggle('on',[3,4,5,6,7].includes(n));
     if(n===2)timer=setTimeout(()=>go(3),2200);
-    if(n===7){burst(80);floatHearts(10)}
+    if(n===8){burst(80);floatHearts(10)}
   };
   if(from&&from.classList.contains('on')){from.classList.add('out');setTimeout(show,280)}else show();
 }
 function next(){
   const s=cur+1;
-  if(s===5){state.food=$('#food').value.trim();save()}
-  if(s===7){state.addr=$('#addr').value.trim();save()}
+  if(s===6){state.food=$('#food').value.trim();save()}
+  if(s===8){state.addr=$('#addr').value.trim();save()}
   go(cur+1);
 }
 document.querySelectorAll('[data-next]').forEach(b=>b.onclick=next);
 $('#back').onclick=()=>{
   if(cur===3)go(1);else{
-    if(cur===4)state.food=$('#food').value;
-    if(cur===6)state.addr=$('#addr').value;
+    if(cur===5)state.food=$('#food').value;
+    if(cur===7)state.addr=$('#addr').value;
     save();go(cur-1)
   }
 };
@@ -213,10 +230,20 @@ function tick(){
   if(parts.length)requestAnimationFrame(tick);else run=false;
 }
 
+/* time picker */
+const pad=n=>String(n).padStart(2,'0');
+function renderTime(){$('#hh').textContent=pad(state.h);$('#mm').textContent=pad(state.m)}
+document.querySelectorAll('.arr').forEach(b=>b.onclick=()=>{
+  const d=+b.dataset.d;
+  if(b.dataset.t==='h')state.h=(state.h+d+24)%24;else state.m=(state.m+d*5+60)%60;
+  save();renderTime();
+});
+renderTime();
+
 /* send answers to Q */
 $('#sendQ').onclick=async()=>{
   const d=state.date==='other'?state.other.trim():state.date;
-  const lines=['Ok lets go 💗','📅 Ngày rảnh: '+d];
+  const lines=['Ok lets go 💗','📅 Ngày rảnh: '+d,'⏰ Giờ qua rước: '+pad(state.h)+':'+pad(state.m)];
   if(state.food.trim())lines.push('🍜 Món yêu thích: '+state.food.trim());
   if(state.addr.trim())lines.push('🏡 Địa chỉ: '+state.addr.trim());
   const text=lines.join('\n');
