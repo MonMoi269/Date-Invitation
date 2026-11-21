@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>A little invitation 💗</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg1:#fff6ee;--bg2:#ffe3ec;--card:rgba(255,255,255,.7);--text:#5a2a3c;--muted:#a0657c;--pink:#ff8fb1;--deep:#e8456f;--green:#4cc38a;--line:#ffc9da;--input:#fff;--shadow:0 20px 50px rgba(232,69,111,.18);
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg1:#2a1620;--bg2:#3a1b2b;--card:rgba(70,35,50,.65);--text:#ffe9f0;--muted:#e5a6bc;--line:#6e3550;--input:#3b1f2e;--shadow:0 20px 50px rgba(0,0,0,.4)}}
+:root[data-theme="dark"]{--bg1:#2a1620;--bg2:#3a1b2b;--card:rgba(70,35,50,.65);--text:#ffe9f0;--muted:#e5a6bc;--line:#6e3550;--input:#3b1f2e;--shadow:0 20px 50px rgba(0,0,0,.4)}
+html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;height:100%;font-family:'Nunito','Quicksand',system-ui,sans-serif;color:var(--text);background:linear-gradient(160deg,var(--bg1),var(--bg2));overflow:hidden;display:flex;align-items:center;justify-content:center;padding:16px}
+#bg,#confetti{position:fixed;inset:0;pointer-events:none}
+#confetti{z-index:50;width:100%;height:100%}
+.float{position:absolute;bottom:-40px;opacity:.55;animation:rise linear forwards}
+@keyframes rise{to{transform:translateY(-115vh) rotate(25deg);opacity:0}}
+.card{position:relative;z-index:2;width:min(440px,100%);max-height:100%;overflow-y:auto;background:var(--card);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.6);border-radius:32px;box-shadow:var(--shadow);padding:36px 26px 30px;text-align:center}
+.step{display:none;animation:in .5s ease both}
+.step.on{display:block}
+.step.out{animation:out .3s ease both}
+@keyframes in{from{opacity:0;transform:translateY(18px) scale(.97)}to{opacity:1;transform:none}}
+@keyframes out{to{opacity:0;transform:translateY(-12px) scale(.97)}}
+h1{font-size:1.75rem;font-weight:900;margin:14px 0 8px;line-height:1.25}
+p{margin:0 0 22px;color:var(--muted);font-weight:600;line-height:1.5}
+.big{font-size:4.2rem;line-height:1;animation:beat 1.4s ease-in-out infinite;display:inline-block}
+.trio{font-size:2.6rem;letter-spacing:6px}.trio span{display:inline-block;animation:beat 1.2s ease-in-out infinite}
+.trio span:nth-child(2){animation-delay:.2s;font-size:3.4rem}.trio span:nth-child(3){animation-delay:.4s}
+@keyframes beat{50%{transform:scale(1.15)}}
+.ico{font-size:2.4rem}
+.btn{font:inherit;font-weight:800;font-size:1.05rem;border:0;border-radius:999px;padding:14px 28px;cursor:pointer;color:#fff;background:linear-gradient(135deg,var(--pink),var(--deep));box-shadow:0 8px 20px rgba(232,69,111,.3);transition:transform .2s,box-shadow .2s,opacity .2s}
+.btn:hover{transform:translateY(-2px) scale(1.04);box-shadow:0 12px 26px rgba(232,69,111,.4)}
+.btn:active{transform:scale(.96)}
+.btn.green{background:linear-gradient(135deg,#6fd9a2,var(--green));box-shadow:0 8px 20px rgba(76,195,138,.35)}
+.btn.ghost{background:var(--input);color:var(--deep);box-shadow:0 4px 12px rgba(0,0,0,.08);border:2px solid var(--line)}
+.btn.off{opacity:.5}
+.row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;position:relative;min-height:56px}
+#no{transition:transform .25s}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:18px 0}
+.opt{font:inherit;font-weight:800;font-size:1.1rem;padding:18px 8px;border-radius:20px;border:2px solid var(--line);background:var(--input);color:var(--text);cursor:pointer;transition:all .2s}
+.opt:hover{transform:translateY(-3px);border-color:var(--pink)}
+.opt.sel{background:linear-gradient(135deg,var(--pink),var(--deep));color:#fff;border-color:transparent;transform:scale(1.05);box-shadow:0 8px 20px rgba(232,69,111,.35)}
+.inp{width:100%;font:inherit;font-weight:600;font-size:1rem;color:var(--text);background:var(--input);border:2px solid var(--line);border-radius:20px;padding:14px 16px;outline:0;margin:6px 0 18px;transition:border .2s,box-shadow .2s;resize:none}
+.inp:focus{border-color:var(--pink);box-shadow:0 0 0 4px rgba(255,143,177,.25)}
+.inp::placeholder{color:var(--muted);opacity:.7}
+#other{display:none;animation:in .35s ease both}#other.on{display:block}
+.back{position:absolute;top:14px;left:16px;background:none;border:0;font:inherit;font-weight:800;color:var(--muted);cursor:pointer;display:none}
+.back.on{display:block}
+.check{width:84px;height:84px;border-radius:50%;background:var(--green);color:#fff;font-size:2.8rem;display:inline-flex;align-items:center;justify-content:center;box-shadow:0 10px 24px rgba(76,195,138,.4);animation:pop .6s cubic-bezier(.3,1.6,.5,1) both}
+@keyframes pop{from{transform:scale(0)}}
+#toast{position:fixed;z-index:60;left:50%;top:calc(env(safe-area-inset-top,0px) + 18px);transform:translate(-50%,-80px);background:var(--deep);color:#fff;font-weight:800;padding:12px 22px;border-radius:999px;box-shadow:0 10px 24px rgba(0,0,0,.2);transition:transform .35s cubic-bezier(.3,1.4,.5,1);max-width:90vw;text-align:center}
+#toast.on{transform:translate(-50%,0)}
+.sm{font-weight:800;color:var(--deep);margin-top:-6px}
+</style>
+</head>
+<body>
+<div id="bg"></div>
+<canvas id="confetti"></canvas>
+<div id="toast"></div>
+
+<main class="card">
+  <button class="back" id="back">← Back</button>
+
+  <section class="step" data-s="1">
+    <div class="big">💌</div>
+    <h1>Hey there! 💗</h1>
+    <p>I’ve been wanting to ask you something for a while now...</p>
+    <button class="btn" data-next>What is it? 💌</button>
+  </section>
+
+  <section class="step" data-s="2">
+    <div class="big">💖</div>
+    <h1>Will you go out with me?</h1>
+    <p>I promise to make it a lovely date!</p>
+    <div class="row">
+      <button class="btn green" id="yes">Yes 💗</button>
+      <button class="btn ghost" id="no">Think again!</button>
+    </div>
+  </section>
+
+  <section class="step" data-s="3">
+    <div class="trio"><span>💗</span><span>💗</span><span>💗</span></div>
+    <h1>YAAAAY!!!</h1>
+    <p>You just made me the happiest person alive!</p>
+    <div class="sm">It’s a date! 💗</div>
+  </section>
+
+  <section class="step" data-s="4">
+    <div class="ico">📅</div>
+    <h1>Tối hôm nào em rảnh á</h1>
+    <div class="grid" id="dates">
+      <button class="opt" data-v="27/11">27/11</button>
+      <button class="opt" data-v="28/11">28/11</button>
+      <button class="opt" data-v="29/11">29/11</button>
+      <button class="opt" data-v="other">Ngày khác</button>
+    </div>
+    <div id="other"><input class="inp" id="otherInp" type="text" placeholder="Em rảnh ngày nào nhỉ? 🗓️" maxlength="60"></div>
+    <button class="btn" id="dateNext">Continue</button>
+  </section>
+
+  <section class="step" data-s="5">
+    <div class="ico">🍜</div>
+    <h1 style="font-size:1.4rem">Món ăn yêu thích của em là gì? (Trừ bò kho, bò kho tui note rùi 😏)</h1>
+    <input class="inp" id="food" type="text" placeholder="Em thích ăn món gì nhỉ? 🍜" maxlength="120">
+    <button class="btn" data-next>Continue</button>
+  </section>
+
+  <section class="step" data-s="5b">
+    <div class="ico">🍿</div>
+    <h1>Đi chơi</h1>
+    <p>Mình đi ăn - đi coi phim - Còn thời gian thì đi dạo nói chuyện nhenn</p>
+    <button class="btn" data-next>Continue</button>
+  </section>
+
+  <section class="step" data-s="6">
+    <div class="ico">🏡</div>
+    <h1 style="font-size:1.4rem">Nếu nàng cảm thấy thoải mái thì cho Q xin địa chỉ nhaa</h1>
+    <input class="inp" id="addr" type="text" placeholder="Địa chỉ của em là... 🏡" maxlength="200">
+    <button class="btn" data-next>Continue</button>
+  </section>
+
+  <section class="step" data-s="7">
+    <div class="check">✓</div>
+    <h1>Ok lets go</h1>
+    <p>Mong chờ được gặp N ghê</p>
+    <button class="btn" id="sendQ" style="margin-bottom:18px">Gửi cho Q 💌</button>
+    <div class="trio" style="font-size:1.6rem"><span>💗</span><span>💗</span><span>💗</span></div>
+  </section>
+</main>
+
+<script>
+const state={date:null,other:'',food:'',addr:''};
+let cur=0,timer=null;
+const $=s=>document.querySelector(s),steps=[...document.querySelectorAll('.step')];
+try{const s=JSON.parse(localStorage.getItem('dateInvite')||'null');if(s){Object.assign(state,s)}}catch(e){}
+const save=()=>{try{localStorage.setItem('dateInvite',JSON.stringify(state))}catch(e){}};
+
+/* toast */
+let tt;function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('on');clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('on'),2200)}
+
+/* navigation */
+function go(n){
+  clearTimeout(timer);
+  const from=steps[cur];
+  const show=()=>{
+    steps.forEach(s=>s.classList.remove('on','out'));
+    cur=n;steps[n].classList.add('on');
+    $('#back').classList.toggle('on',[3,4,5,6].includes(n));
+    if(n===2)timer=setTimeout(()=>go(3),2200);
+    if(n===7){burst(80);floatHearts(10)}
+  };
+  if(from&&from.classList.contains('on')){from.classList.add('out');setTimeout(show,280)}else show();
+}
+function next(){
+  const s=cur+1;
+  if(s===5){state.food=$('#food').value.trim();save()}
+  if(s===7){state.addr=$('#addr').value.trim();save()}
+  go(cur+1);
+}
+document.querySelectorAll('[data-next]').forEach(b=>b.onclick=next);
+$('#back').onclick=()=>{
+  if(cur===3)go(1);else{
+    if(cur===4)state.food=$('#food').value;
+    if(cur===6)state.addr=$('#addr').value;
+    save();go(cur-1)
+  }
+};
+
+/* step 2 */
+$('#yes').onclick=()=>{burst(160);floatHearts(18);go(2)};
+const no=$('#no');
+no.onclick=()=>{const x=(Math.random()-.5)*120,y=(Math.random()-.5)*40;no.style.transform=`translate(${x}px,${y}px) rotate(${(Math.random()-.5)*14}deg)`;toast('Nghĩ lại đi mà 🥺')};
+
+/* step 4 */
+const opts=[...document.querySelectorAll('.opt')];
+function renderDate(){
+  opts.forEach(o=>o.classList.toggle('sel',o.dataset.v===state.date));
+  $('#other').classList.toggle('on',state.date==='other');
+  $('#otherInp').value=state.other;
+}
+opts.forEach(o=>o.onclick=()=>{state.date=o.dataset.v;save();renderDate();if(state.date==='other')setTimeout(()=>$('#otherInp').focus(),50)});
+$('#otherInp').oninput=e=>{state.other=e.target.value;save()};
+$('#dateNext').onclick=()=>{
+  if(!state.date)return toast('Chọn một ngày đã nha 💗');
+  if(state.date==='other'&&!state.other.trim())return toast('Nhập ngày em rảnh nhé 🗓️');
+  go(4);
+};
+$('#food').value=state.food;$('#addr').value=state.addr;
+$('#food').oninput=e=>{state.food=e.target.value;save()};
+$('#addr').oninput=e=>{state.addr=e.target.value;save()};
+[['#food',5],['#addr',6]].forEach(([s,n])=>$(s).addEventListener('keydown',e=>{if(e.key==='Enter')steps[cur].querySelector('[data-next]').click()}));
+
+/* background hearts */
+const bg=$('#bg'),em=['💗','💕','✨','⭐','🌸','💖'];
+function floatHearts(n){for(let i=0;i<n;i++){const e=document.createElement('div');e.className='float';e.textContent=em[Math.random()*em.length|0];e.style.left=Math.random()*100+'%';e.style.fontSize=(14+Math.random()*26)+'px';const d=7+Math.random()*8;e.style.animationDuration=d+'s';e.style.animationDelay=Math.random()*3+'s';bg.appendChild(e);setTimeout(()=>e.remove(),(d+3)*1000)}}
+floatHearts(12);setInterval(()=>floatHearts(2),2500);
+
+/* confetti */
+const cv=$('#confetti'),cx=cv.getContext('2d');let parts=[],run=false;
+function size(){cv.width=innerWidth;cv.height=innerHeight}size();addEventListener('resize',size);
+function burst(n){
+  const cols=['#ff8fb1','#e8456f','#ffd1dc','#ffe08a','#9be3bf','#fff'];
+  for(let i=0;i<n;i++)parts.push({x:innerWidth/2,y:innerHeight/2.2,vx:(Math.random()-.5)*16,vy:Math.random()*-14-2,r:4+Math.random()*5,c:cols[Math.random()*cols.length|0],rot:Math.random()*6,vr:(Math.random()-.5)*.3,h:Math.random()<.3});
+  if(!run){run=true;tick()}
+}
+function tick(){
+  cx.clearRect(0,0,cv.width,cv.height);
+  parts=parts.filter(p=>p.y<innerHeight+20);
+  parts.forEach(p=>{p.vy+=.3;p.x+=p.vx;p.y+=p.vy;p.vx*=.99;p.rot+=p.vr;cx.save();cx.translate(p.x,p.y);cx.rotate(p.rot);cx.fillStyle=p.c;
+    if(p.h){cx.font=p.r*3+'px serif';cx.fillText('💗',-p.r,p.r)}else cx.fillRect(-p.r,-p.r/2,p.r*2,p.r);cx.restore()});
+  if(parts.length)requestAnimationFrame(tick);else run=false;
+}
+
+/* send answers to Q */
+$('#sendQ').onclick=async()=>{
+  const d=state.date==='other'?state.other.trim():state.date;
+  const lines=['Ok lets go 💗','📅 Ngày rảnh: '+d];
+  if(state.food.trim())lines.push('🍜 Món yêu thích: '+state.food.trim());
+  if(state.addr.trim())lines.push('🏡 Địa chỉ: '+state.addr.trim());
+  const text=lines.join('\n');
+  
+  let ok=false;
+  try{await navigator.clipboard.writeText(text);ok=true}catch(e){}
+  if(!ok){try{const t=document.createElement('textarea');t.value=text;t.style.position='fixed';t.style.opacity='0';document.body.appendChild(t);t.select();ok=document.execCommand('copy');t.remove()}catch(e){}}
+  toast(ok?'Đã copy! Dán vào tin nhắn gửi Q nha 💌':'Không copy được, chụp màn hình gửi Q nha 💗');
+};
+
+renderDate();go(0);
+</script>
+</body>
+</html>
